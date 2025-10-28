@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Close-Up: Self Portrait</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap');
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #000010 0%, #000000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: white;
+    font-family: 'Pretendard', sans-serif;
+  }
+
+  .container {
+    position: relative;
+    text-align: center;
+    animation: fadeIn 1.5s ease-out forwards;
+  }
+
+  img {
+    max-width: 85vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    box-shadow: 0 0 25px rgba(255, 0, 200, 0.35);
+    opacity: 0;
+    animation: zoomIn 2s ease-out 0.8s forwards;
+    border-radius: 8px;
+  }
+
+  .caption {
+    position: absolute;
+    bottom: -60px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.7);
+    opacity: 0;
+    animation: fadeText 1.5s ease-in 2s forwards;
+  }
+
+  .glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,0,255,0.25), transparent 70%);
+    filter: blur(120px);
+    animation: float 6s ease-in-out infinite alternate;
+    z-index: 0;
+  }
+
+  .glow:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+  .glow:nth-child(2) { bottom: 15%; right: 20%; background: radial-gradient(circle, rgba(0,255,255,0.25), transparent 70%); animation-delay: 2s; }
+  .glow:nth-child(3) { top: 40%; right: 40%; background: radial-gradient(circle, rgba(0,255,120,0.25), transparent 70%); animation-delay: 4s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(1.05); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes zoomIn {
+    from { opacity: 0; transform: scale(1.2); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes fadeText {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    from { transform: translateY(0px) scale(1); }
+    to { transform: translateY(-20px) scale(1.1); }
+  }
+</style>
+</head>
+<body>
+  <!-- 네온빛 흐름 -->
+  <div class="glow"></div>
+  <div class="glow"></div>
+  <div class="glow"></div>
+
+  <!-- 이미지와 텍스트 -->
+  <div class="container">
+    <img id="portrait" src="" alt="Self Portrait">
+    <div class="caption">당신의 손끝에서 만들어진 디지털 초상</div>
+  </div>
+
+  <script>
+    // ?img= 파라미터로 전달된 이미지 주소 불러오기
+    const params = new URLSearchParams(window.location.search);
+    const imgUrl = params.get("img");
+
+    if (imgUrl) {
+      // ✅ 프록시를 통해 CORS 우회 (자동 작동)
+      const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(imgUrl);
+      document.getElementById("portrait").src = proxyUrl;
+    } else {
+      document.querySelector('.container').innerHTML = "<p style='color:#aaa;'>이미지를 불러올 수 없습니다.</p>";
+    }
+  </script>
+</body>
+</html>
